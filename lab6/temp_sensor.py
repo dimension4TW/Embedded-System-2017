@@ -54,16 +54,16 @@ class pyscope :
         "Destructor to make sure pygame shuts down, etc."
 
     def display(self):
-        humidity, base_temperature = Adafruit_DHT.read_retry(sensor, pin)
+        base_temperature = 10
         last_y = 600
-        for i in range(0,600):
+        for i in range(200,800):
             humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
             if humidity is not None and temperature is not None:
                 print(" Temp= "+ str(temperature))
             else:
                 print('Failed to get reading. Try again!')
 
-            current_y = (float(temperature-base_temperature)/20)*600
+            current_y = (float(temperature - base_temperature)/20)*600
             pygame.mixer.music.set_volume(float(current_y/600))
             pygame.draw.line(self.screen,(255,0,0),(i,last_y),(i,current_y),1)
             last_y = current_y
