@@ -12,7 +12,7 @@ class pyscope :
             print "I'm running under X display = {0}".format(disp_no)
 
         # Check which frame buffer drivers are available
-        drivers = ['directfb']
+        drivers = ['directfb', 'fbcon', 'svgalib']
         found = False
         for driver in drivers:
             if not os.getenv('SDL_VIDEODRIVER'):
