@@ -65,9 +65,9 @@ class pyscope :
 
             current_y = (float(temperature - base_temperature)/20)*600
             pygame.mixer.music.set_volume(float(current_y/600))
-            pygame.draw.line(self.screen,(255,0,0),(i,last_y),(i,current_y),1)
-            last_y = current_y
+            pygame.draw.line(self.screen,(255,0,0),(i-1,last_y),(i,current_y),1)
             pygame.display.update()
+            last_y = current_y
             time.sleep(0.1)
 
 
