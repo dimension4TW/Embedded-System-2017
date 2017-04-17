@@ -73,7 +73,8 @@ class pyscope :
         pygame.display.update()
 
     #6.3
-        for i in range(0,1000):
+        for i in range(0,200):
+            pygame.mixer.music.set_volume(i/200)
             pygame.draw.line(self.screen,(255,0,0),(100,190),(100+i,190-i),1)
             pygame.display.update()
             time.sleep(0.1)
