@@ -47,7 +47,7 @@ class pyscope :
 
     def display(self):
     #6.1
-    """
+        """
         self.screen.fill((255,0,0))
         pygame.display.update()
         time.sleep(3)
@@ -57,7 +57,7 @@ class pyscope :
         self.screen.fill((0,0,255))
         pygame.display.update()
         time.sleep(3)
-    """
+        """
     #6.2
         pygame.draw.rec(screen,(0,255,0),(100,100,90,90),0)
         pygame.draw.line(screen,(255,0,0),(130,100),(130,190),1)
