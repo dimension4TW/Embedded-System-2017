@@ -38,6 +38,11 @@ class pyscope :
         # Render the screen
         pygame.display.update()
         # Initialize mixer
+
+        #6.3
+        pygame.mixer.init()
+        pygame.mixer.music.load("lab.mp3")
+        pygame.mixer.play()
         while(1):
             self.display()
 
@@ -59,6 +64,7 @@ class pyscope :
         time.sleep(3)
         """
     #6.2
+
         pygame.draw.rect(self.screen,(0,255,0),(100,100,90,90),0)
         pygame.draw.line(self.screen,(255,0,0),(130,100),(130,190),1)
         pygame.draw.line(self.screen,(255,0,0),(160,100),(160,190),1)
@@ -66,6 +72,11 @@ class pyscope :
         pygame.draw.line(self.screen,(255,0,0),(100,160),(190,160),1)
         pygame.display.update()
 
+    #6.3
+        for i in range(0,1000):
+            pygame.draw.line(self.screen,(255,0,0),(100,190),(100+i,190-i),1)
+            pygame.display.update()
+            time.sleep(0.1)
 
 
 
