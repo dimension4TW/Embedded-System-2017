@@ -65,17 +65,17 @@ class pyscope :
         """
     #6.2
 
-        pygame.draw.rect(self.screen,(0,255,0),(100,100,90,90),0)
-        pygame.draw.line(self.screen,(255,0,0),(130,100),(130,190),1)
-        pygame.draw.line(self.screen,(255,0,0),(160,100),(160,190),1)
-        pygame.draw.line(self.screen,(255,0,0),(100,130),(190,130),1)
-        pygame.draw.line(self.screen,(255,0,0),(100,160),(190,160),1)
+        pygame.draw.rect(self.screen,(0,255,0),(0,0,600,600),0)
+        pygame.draw.line(self.screen,(255,0,0),(200,0),(200,600),1)
+        pygame.draw.line(self.screen,(255,0,0),(400,0),(400,600),1)
+        pygame.draw.line(self.screen,(255,0,0),(0,200),(600,200),1)
+        pygame.draw.line(self.screen,(255,0,0),(0,400),(600,400),1)
         pygame.display.update()
 
     #6.3
-        for i in range(0,200):
-            pygame.mixer.music.set_volume((float)i/200)
-            pygame.draw.line(self.screen,(255,0,0),(100,190),(100+i,190-i),1)
+        for i in range(0,600):
+            pygame.mixer.music.set_volume(float(i)/100)
+            pygame.draw.line(self.screen,(255,0,0),(0,600),(0+i,600-i),1)
             pygame.display.update()
             time.sleep(0.1)
 
