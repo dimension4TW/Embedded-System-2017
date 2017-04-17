@@ -59,7 +59,7 @@ class pyscope :
         time.sleep(3)
         """
     #6.2
-        pygame.draw.rec(screen,(0,255,0),(100,100,90,90),0)
+        pygame.draw.rect(screen,(0,255,0),(100,100,90,90),0)
         pygame.draw.line(screen,(255,0,0),(130,100),(130,190),1)
         pygame.draw.line(screen,(255,0,0),(160,100),(160,190),1)
         pygame.draw.line(screen,(255,0,0),(100,130),(190,130),1)
