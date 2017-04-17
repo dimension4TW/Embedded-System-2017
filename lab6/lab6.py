@@ -39,7 +39,7 @@ class pyscope :
         pygame.display.update()
         # Initialize mixer
         while(1):
-            display()
+            self.display()
 
 
     def __del__(self):
