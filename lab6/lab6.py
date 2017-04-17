@@ -42,7 +42,7 @@ class pyscope :
         #6.3
         pygame.mixer.init()
         pygame.mixer.music.load("lab6.mp3")
-        pygame.mixer.music.play(5)
+        pygame.mixer.music.play(-1)
         while(1):
             self.display()
 
