@@ -46,13 +46,13 @@ class pyscope :
         "Destructor to make sure pygame shuts down, etc."
 
     def display(self):
-        self.screen.fill(255,0,0)
+        self.screen.fill((255,0,0))
         pygame.display.update()
         time.sleep(3)
-        self.screen.fill(0,255,0)
+        self.screen.fill((0,255,0))
         pygame.display.update()
         time.sleep(3)
-        self.screen.fill(0,0,255)
+        self.screen.fill((0,0,255))
         pygame.display.update()
         time.sleep(3)
 
