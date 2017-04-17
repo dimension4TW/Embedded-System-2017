@@ -1,6 +1,4 @@
 import Adafruit_DHT
-
-
 import os
 import pygame
 import time
@@ -11,8 +9,6 @@ class pyscope :
 
     def __init__(self):
 
-        sensor = Adafruit_DHT.DHT22
-        pin = 'P8_11'
 
         "Ininitializes a new pygame screen using the framebuffer"
         disp_no = os.getenv("DISPLAY")
@@ -78,6 +74,8 @@ class pyscope :
 
 
 # Create an instance of the PyScope class
+sensor = Adafruit_DHT.DHT22
+pin = 'P8_11'
 scope = pyscope()
 scope.display()
 time.sleep(10)
