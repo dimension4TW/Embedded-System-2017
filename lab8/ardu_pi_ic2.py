@@ -13,8 +13,17 @@ def request_reading():
 
 
 while True:
+    """
     command = raw_input("Enter command: l - toggle LED, r - read A0 ")
     if command == 'l' :
         bus.write_byte(SLAVE_ADDRESS, ord('l'))
     elif command == 'r' :
         request_reading()
+    """
+    reading = int(bus.read_byte(SLAVE_ADDRESS))
+    print(reading)
+    if reading > 20:
+        bus.write_byte(SLAVE_ADDRESS, ord('l'))
+    else:
+        bus.write_byte(SLAVE_ADDRESS, ord('n'))
+    time.sleep(0.5) 
