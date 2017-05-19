@@ -10,7 +10,7 @@ sensor_args = {'11': Adafruit_DHT.DHT11,
                 '2302': Adafruit_DHT.AM2302}
                 
 sensor = sensor_args['11']
-pin = '4'
+pin = 4
 
 while True:
     humidity, temperature = Adafruit_DHT.read_retry(sensor,pin)
