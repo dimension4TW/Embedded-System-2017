@@ -3,15 +3,8 @@ import tornado.web
 import RPi.GPIO as go
 import time
 import shlex, subprocess
-
-go.cleanup()
-go.setmode(go.BOARD)
-# for car's movement
-go.setup(7,  go.OUT)
-go.setup(11, go.OUT)
-go.setup(13, go.OUT)
-go.setup(15, go.OUT)
-
+import os
+import signal
 
 def front(t):
     go.output(7, False)
@@ -66,6 +59,7 @@ def stop():
 class MainHandler(tornado.web.RequestHandler):
     def post(self):
         global mode 
+        global pro
         control = self.get_argument('control', '')
         print(control)
         if control == 'w' and mode == 'mode2':
@@ -79,18 +73,26 @@ class MainHandler(tornado.web.RequestHandler):
         elif control == 'q':
             if(mode=="mode1"):
                 mode = "mode2"
-                cmd = 'sudo python3 server.py'
+                go.cleanup()
+                go.setmode(go.BOARD)
+                # for car's movement
+                go.setup(7,  go.OUT)
+                go.setup(11, go.OUT)
+                go.setup(13, go.OUT)
+                go.setup(15, go.OUT)
+                cmd = 'sudo python3 ./pistreaming/server.py'
                 args = shlex.split(cmd)
-                p = subprocess.Popen(args)
-                
+                #pro = subprocess.Popen(cmd,shell=True)                
+                pro = subprocess.Popen(args)                
             else:
+                print(os.kill((pro.pid), signal.SIGINT))
+                go.cleanup()
                 mode = "mode1"
-        else:
-            stop()
-            
+
         self.write("ok")
     
     def get(self):
+        global mode
         self.write(mode) 
 
 def make_app():
