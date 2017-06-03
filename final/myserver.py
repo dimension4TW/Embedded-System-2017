@@ -73,6 +73,7 @@ class MainHandler(tornado.web.RequestHandler):
         elif control == 'q':
             if(mode=="mode1"):
                 mode = "mode2"
+                time.sleep(3)
                 go.cleanup()
                 go.setmode(go.BOARD)
                 # for car's movement
