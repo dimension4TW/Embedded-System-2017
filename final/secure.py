@@ -9,23 +9,6 @@ import sys
 import signal
 import ast
 
-# mode1: secure
-# mode2: killing
-v = 343  # 331 + 0.6 * 20
-trigger_pin = 16
-echo_pin    = 18
-
-go.setmode(go.BOARD)
-# for distance detector
-go.setup(trigger_pin, go.OUT)
-go.setup(echo_pin, go.IN)
-# for car's movement
-go.setup(7,  go.OUT)
-go.setup(11, go.OUT)
-go.setup(13, go.OUT)
-go.setup(15, go.OUT)
-time.sleep(2)
-
 def front(t):
     go.output(7, False)
     go.output(11,True)
@@ -155,71 +138,87 @@ def killing():
             rear(0.5)
         elif temp == 'x':
             stop()
-        elif temp == ' ':
-
+        #elif temp == ' ':
+        
         else:
             stop()
 
 
-def __init__(self):
+if __name__ == "__main__":
+    # mode1: secure
+    # mode2: killing
+    v = 343  # 331 + 0.6 * 20
+    trigger_pin = 16
+    echo_pin    = 18
+    go.setmode(go.BOARD)
+    # for distance detector
+    go.setup(trigger_pin, go.OUT)
+    go.setup(echo_pin, go.IN)
+    # for car's movement
+    go.setup(7,  go.OUT)
+    go.setup(11, go.OUT)
+    go.setup(13, go.OUT)
+    go.setup(15, go.OUT)
+    time.sleep(2)
 
     mode = 'secure'
     while True:
 
-    interrupt = 0
-    file = open('int.txt', 'w')
-    file.write('0')
-    file.close()
+        interrupt = 0
+        file = open('int.txt', 'w')
+        file.write('0')
+        file.close()
 
-    fkill= open('kill.txt', 'w')
-    fkill.write('x')
-    fkill.close()
-    try:
-        ppid = os.fork()
-        if ppid == 0: # child process
-            # receive mode
-            if mode == 'secure':
-                secure()
-            elif mode == 'killing':
-                killing()
-        else: # parent process
-            while True:
-                rr = requests.get('http://127.0.0.1:8888')
-                r = ast.literal_eval(rr.text)
+        fkill= open('kill.txt', 'w')
+        fkill.write('x')
+        fkill.close()
+        try:
+            ppid = os.fork()
+            if ppid == 0: # child process
+                # receive mode
                 if mode == 'secure':
-                    if r['mode'] == 'mode2':
-                        file = open('int.txt', 'w')
-                        file.write('1')
-                        file.close()
-                        mode = 'killing'
-                        status1 = os.wait()
-                        break
+                    secure()
                 elif mode == 'killing':
-                    if r['mode'] == 'mode2':
-                        print(r["dir"])
-                        fkill = open('kill.txt', 'w')
-                        elif r['dir'] == 'w':
-                            fkill.write('w')
-                        elif r['dir'] == 'a':
-                            fkill.write('a')
-                        elif r['dir'] == 's':
-                            fkill.write('s')
-                        elif r['dir'] == 'd':
-                            fkill.write('d')
-                        elif r['dir'] == 'x':
-                            fkill.write('x')
-                        elif r['dir'] == ' ':
-                            fkill.write(' ')
-                        else:
-                            fkill.write('x')
-                        fkill.close()
-                    elif r['mode'] == 'mode1':
-                        fkill = open('kill.txt', 'w')
-                        fkill.write('1')
-                        fkill.close()
-                        mode == 'secure'
-                        status2 = os.wait()
-                        break
+                    killing()
+            else: # parent process
+                while True:
+                    rr = requests.get('http://127.0.0.1:8888')
+                    r = ast.literal_eval(rr.text)
+                    print(r)
+                    if mode == 'secure':
+                        if r['mode'] == 'mode2':
+                            file = open('int.txt', 'w')
+                            file.write('1')
+                            file.close()
+                            mode = 'killing'
+                            status1 = os.wait()
+                            break
+                    elif mode == 'killing':
+                        if r['mode'] == 'mode2':
+                            print(r["dir"])
+                            fkill = open('kill.txt', 'w')
+                            if r['dir'] == 'w':
+                                fkill.write('w')
+                            elif r['dir'] == 'a':
+                                fkill.write('a')
+                            elif r['dir'] == 's':
+                                fkill.write('s')
+                            elif r['dir'] == 'd':
+                                fkill.write('d')
+                            elif r['dir'] == 'x':
+                                fkill.write('x')
+                            elif r['dir'] == ' ':
+                                fkill.write(' ')
+                            else:
+                                fkill.write('x')
+                            fkill.close()
+                        elif r['mode'] == 'mode1':
+                            fkill = open('kill.txt', 'w')
+                            fkill.write('1')
+                            fkill.close()
+                            mode == 'secure'
+                            status2 = os.wait()
+                            break
 
-    except OSError:
-        print ("main fork error")
+        except OSError:
+            print ("main fork error")

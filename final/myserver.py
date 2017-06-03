@@ -67,6 +67,7 @@ class MainHandler(tornado.web.RequestHandler):
         global q #queue to store struction
         control = self.get_argument('control', '')
         print(control)
+    
         if control == 'w' and mode == 'mode2':
             #front(0.5)
             q.put('w')
@@ -84,6 +85,7 @@ class MainHandler(tornado.web.RequestHandler):
         elif control == 'q':
             if(mode=="mode1"):
                 mode = "mode2"
+                """
                 time.sleep(3)
                 go.cleanup()
                 go.setmode(go.BOARD)
@@ -92,13 +94,14 @@ class MainHandler(tornado.web.RequestHandler):
                 go.setup(11, go.OUT)
                 go.setup(13, go.OUT)
                 go.setup(15, go.OUT)
+                """
                 cmd = 'sudo python3 ./pistreaming/server.py'
                 args = shlex.split(cmd)
                 #pro = subprocess.Popen(cmd,shell=True)
                 pro = subprocess.Popen(args)
             else:
                 print(os.kill((pro.pid), signal.SIGINT))
-                go.cleanup()
+                #go.cleanup()
                 mode = "mode1"
 
         self.write("ok")
