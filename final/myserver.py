@@ -5,7 +5,7 @@ import time
 import shlex, subprocess
 import os
 import signal
-
+import Queue
 
 """
 def front(t):
@@ -79,6 +79,8 @@ class MainHandler(tornado.web.RequestHandler):
         elif control == 'd'and mode == 'mode2':
             #right(0.5)
             q.put('d')
+        elif control == ' ' and mode == 'mode2':
+            q.put(' ')
         elif control == 'q':
             if(mode=="mode1"):
                 mode = "mode2"
@@ -105,13 +107,14 @@ class MainHandler(tornado.web.RequestHandler):
         global mode
         global q
         if(mode == "mode1"):
-            dir = " "
+            dir = "x"
         else:
             if(q.empty()):
-                dir = " "
+                dir = "x"
             else:
                 dir = q.get()
-        self.write(mode,dir)
+        re = {"mode":mode, "dir":dir}
+        self.write(re)
 
 def make_app():
     return tornado.web.Application([
@@ -125,6 +128,6 @@ if __name__ == "__main__":
     print ('server running: 0.0.0.0:8888')
     global mode
     global q
-    q = queue.Queue()
+    q = Queue.Queue()
     mode = "mode1"
     tornado.ioloop.IOLoop.current().start()
