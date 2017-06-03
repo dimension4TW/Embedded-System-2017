@@ -139,7 +139,7 @@ def killing():
         elif temp == 'x':
             stop()
         #elif temp == ' ':
-        
+
         else:
             stop()
 
@@ -150,6 +150,7 @@ if __name__ == "__main__":
     v = 343  # 331 + 0.6 * 20
     trigger_pin = 16
     echo_pin    = 18
+    global pro
     go.setmode(go.BOARD)
     # for distance detector
     go.setup(trigger_pin, go.OUT)
@@ -190,6 +191,10 @@ if __name__ == "__main__":
                             file = open('int.txt', 'w')
                             file.write('1')
                             file.close()
+                            cmd = 'sudo python3 ./pistreaming/server.py'
+                            args = shlex.split(cmd)
+                            #pro = subprocess.Popen(cmd,shell=True)
+                            pro = subprocess.Popen(args)
                             mode = 'killing'
                             status1 = os.wait()
                             break
@@ -216,6 +221,7 @@ if __name__ == "__main__":
                             fkill = open('kill.txt', 'w')
                             fkill.write('1')
                             fkill.close()
+                            print(os.kill((pro.pid), signal.SIGINT))
                             mode == 'secure'
                             status2 = os.wait()
                             break
