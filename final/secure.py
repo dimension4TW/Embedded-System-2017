@@ -8,6 +8,7 @@ import time
 import sys
 import signal
 import ast
+import base64
 
 def front(t):
     go.output(7, False)
@@ -97,7 +98,7 @@ def secure():
                     # send server picture first
                     # active beep for 5 seconds
 					img = base64.b64encode(image)
-					r = requests.post('http://140.113.89.234:8888', data={'img': img})
+					r = requests.post('http://140.113.89.234:8888', data={'img_exist': '1','img': img})
                     count = 0
                 if flag:
                     count = 0
