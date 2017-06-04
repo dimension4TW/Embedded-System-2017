@@ -19,6 +19,14 @@ class MainHandler(tornado.web.RequestHandler):
 		global pro
 		global q #queue to store struction
 		control = self.get_argument('control', '')
+		img_exist = self.get_argument('img_exist')
+		if img_exit == '1': 
+			img = self.get_argument('img', '')
+			current_time = strftime("%m/%d/%Y %H:%M:%S", gmtime())
+			print(current_time)
+			f = open(current_time+".jpg", 'w')
+			f.write(img)
+			print(img)
 		print(control)
 		if control == 'w' and mode == 'mode2':
 			q.put('w')
