@@ -96,6 +96,8 @@ def secure():
                 if count == 10:
                     # send server picture first
                     # active beep for 5 seconds
+					img = base64.b64encode(image)
+					r = requests.post('http://140.113.89.234:8888', data={'img': img})
                     count = 0
                 if flag:
                     count = 0
