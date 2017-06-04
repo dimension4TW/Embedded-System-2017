@@ -84,6 +84,7 @@ def secure():
             camera.framerate = 32
             rawCapture = PiRGBArray(camera, size=(320,240))
             time.sleep(2)
+            print("start detecting faces!")
             for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
                 flag = 1
                 image = frame.array
@@ -97,8 +98,9 @@ def secure():
                 if count == 10:
                     # send server picture first
                     # active beep for 5 seconds
-					img = base64.b64encode(image)
-					r = requests.post('http://140.113.89.234:8888', data={'img_exist': '1','img': img})
+                    img = base64.b64encode(image)
+                    print(img)
+                    r = requests.post('http://140.113.89.234:8888', data={'img_exist': '1','img': img})
                     count = 0
                 if flag:
                     count = 0
@@ -186,9 +188,9 @@ if __name__ == "__main__":
                     killing()
             else: # parent process
                 while True:
-                    rr = requests.get('http://127.0.0.1:8888')
+                    rr = requests.get('http://140.113.89.234:8888')
                     r = ast.literal_eval(rr.text)
-                    print(r)
+                    #print(r)
                     if mode == 'secure':
                         if r['mode'] == 'mode2':
                             file = open('int.txt', 'w')
@@ -203,7 +205,7 @@ if __name__ == "__main__":
                             break
                     elif mode == 'killing':
                         if r['mode'] == 'mode2':
-                            print(r["dir"])
+                            #print(r["dir"])
                             fkill = open('kill.txt', 'w')
                             if r['dir'] == 'w':
                                 fkill.write('w')
