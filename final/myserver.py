@@ -9,7 +9,7 @@ import queue
 
 class MainHandler(tornado.web.RequestHandler):
 	def set_default_headers(self):
-		print("setting headers!")
+		#print("setting headers!")
 		self.set_header("Access-Control-Allow-Origin", "*")
 		self.set_header("Access-Control-Allow-Headers", "x-requested-with")
 		self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
@@ -19,14 +19,14 @@ class MainHandler(tornado.web.RequestHandler):
 		global pro
 		global q #queue to store struction
 		control = self.get_argument('control', '')
-		img_exist = self.get_argument('img_exist')
-		if img_exit == '1': 
+		img_exist = self.get_argument('img_exist', '')
+		if img_exist == '1': 
 			img = self.get_argument('img', '')
-			current_time = strftime("%m/%d/%Y %H:%M:%S", gmtime())
+			current_time = time.strftime("%m-%d-%Y--%H-%M", time.localtime())
 			print(current_time)
 			f = open(current_time+".jpg", 'w')
 			f.write(img)
-			print(img)
+			#print(img)
 		print(control)
 		if control == 'w' and mode == 'mode2':
 			q.put('w')
