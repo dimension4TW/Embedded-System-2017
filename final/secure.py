@@ -9,6 +9,8 @@ import sys
 import signal
 import ast
 import base64
+import shlex
+import subprocess
 
 def front(t):
     go.output(7, False)
@@ -99,10 +101,10 @@ def secure():
                     # send server picture first
                     # active beep for 5 seconds
                     cv2.imwrite('img.jpg',image)
-                    img = open('img.jpg','r')
-                    img = base64.b64encode(img)
-                    print(img)
-                    r = requests.post('http://140.113.89.234:8888', data={'img_exist': '1','img': img})
+                    with open('img.jpg','rb') as f:
+                        img = base64.b64encode(f.read())
+                        r = requests.post('http://140.113.89.234:8888', data={'img_exist': '1','img': img})
+                        print(img)
                     count = 0
                 if flag:
                     count = 0
@@ -134,6 +136,7 @@ def killing():
         temp = fkill.read(1)
         fkill.close()
         if temp == '1':
+            go.cleanup()
             sys.exit(0)
         elif temp == 'w':
             front(0.5)
@@ -158,21 +161,22 @@ if __name__ == "__main__":
     trigger_pin = 16
     echo_pin    = 18
     global pro
-    go.setmode(go.BOARD)
-    # for distance detector
-    go.setup(trigger_pin, go.OUT)
-    go.setup(echo_pin, go.IN)
-    # for car's movement
-    go.setup(7,  go.OUT)
-    go.setup(11, go.OUT)
-    go.setup(13, go.OUT)
-    go.setup(15, go.OUT)
-    time.sleep(2)
+    
 
     mode = 'secure'
     while True:
-
+        go.setmode(go.BOARD)
+        # for distance detector
+        go.setup(trigger_pin, go.OUT)
+        go.setup(echo_pin, go.IN)
+        # for car's movement
+        go.setup(7,  go.OUT)
+        go.setup(11, go.OUT)
+        go.setup(13, go.OUT)
+        go.setup(15, go.OUT)
+        time.sleep(2)
         interrupt = 0
+        
         file = open('int.txt', 'w')
         file.write('0')
         file.close()
@@ -192,7 +196,7 @@ if __name__ == "__main__":
                 while True:
                     rr = requests.get('http://140.113.89.234:8888')
                     r = ast.literal_eval(rr.text)
-                    #print(r)
+                    print(r)
                     if mode == 'secure':
                         if r['mode'] == 'mode2':
                             file = open('int.txt', 'w')
@@ -203,7 +207,7 @@ if __name__ == "__main__":
                             #pro = subprocess.Popen(cmd,shell=True)
                             pro = subprocess.Popen(args)
                             mode = 'killing'
-                            status1 = os.wait()
+                            status1 = os.waitpid(ppid, 0)
                             break
                     elif mode == 'killing':
                         if r['mode'] == 'mode2':
@@ -229,8 +233,9 @@ if __name__ == "__main__":
                             fkill.write('1')
                             fkill.close()
                             print(os.kill((pro.pid), signal.SIGINT))
-                            mode == 'secure'
-                            status2 = os.wait()
+                            mode = 'secure'
+                            status2 = os.waitpid(ppid, 0)
+                            time.sleep(5)
                             break
 
         except OSError:
