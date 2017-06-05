@@ -98,7 +98,9 @@ def secure():
                 if count == 10:
                     # send server picture first
                     # active beep for 5 seconds
-                    img = base64.b64encode(image)
+                    cv2.imwrite('img.jpg',image)
+                    img = open('img.jpg','r')
+                    img = base64.b64encode(img)
                     print(img)
                     r = requests.post('http://140.113.89.234:8888', data={'img_exist': '1','img': img})
                     count = 0
