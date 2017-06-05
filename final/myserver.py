@@ -5,6 +5,7 @@ import shlex, subprocess
 import os
 import signal
 import queue
+import base64
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -24,9 +25,13 @@ class MainHandler(tornado.web.RequestHandler):
 			img = self.get_argument('img', '')
 			current_time = time.strftime("%m-%d-%Y--%H-%M", time.localtime())
 			print(current_time)
-			f = open(current_time+".jpg", 'w')
-			f.write(img)
+			f = open(current_time+".jpg", 'wb')
+			print(img)
+			bimg = base64.b64decode(img)
+			f.write(bimg)
 			#print(img)
+			f.close()
+			print("get image")
 		print(control)
 		if control == 'w' and mode == 'mode2':
 			q.put('w')
