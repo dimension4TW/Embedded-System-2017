@@ -41,8 +41,8 @@ class MainHandler(tornado.web.RequestHandler):
 			q.put('s')
 		elif control == 'd'and mode == 'mode2':
 			q.put('d')
-		elif control == ' ' and mode == 'mode2':
-			q.put(' ')
+		elif control == 'k' and mode == 'mode2':
+			q.put('k')
 		elif control == 'q':
 			if(mode=="mode1"):
 				mode = "mode2"
