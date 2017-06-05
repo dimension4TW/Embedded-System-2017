@@ -62,6 +62,18 @@ def stop():
     go.output(13,False)
     go.output(15,False)
 
+def beep():
+    go.output(38, False)
+    go.output(40, True)
+    time.sleep(1)
+    go.output(38, False)
+    go.output(40, False)
+
+def attack():
+    go.output(37, True)
+    time.sleep(0.5)
+    go.output(37, False)
+
 def measure():
     go.output(trigger_pin, go.HIGH)
     time.sleep(0.00001)
@@ -97,9 +109,10 @@ def secure():
                     cv2.rectangle(image,(x,y),(x+w,y+h),(255,2,2),2)
                     count = count + 1
                     flag = 0
-                if count == 10:
+                if count == 3:
                     # send server picture first
                     # active beep for 5 seconds
+                    beep()
                     cv2.imwrite('img.jpg',image)
                     with open('img.jpg','rb') as f:
                         img = base64.b64encode(f.read())
@@ -118,9 +131,9 @@ def secure():
                 temp2 = f2.read(1)
                 f2.close()
                 if measure() < 20:
-                    left(0.5)
+                    left(0.3)
                 else:
-                    front(0.5)
+                    front(0.2)
                 if temp2=='1':
                     os.kill(pid, signal.SIGKILL)
                     break
@@ -139,6 +152,7 @@ def killing():
             go.cleanup()
             sys.exit(0)
         elif temp == 'w':
+            print('fuck')
             front(0.5)
         elif temp == 'a':
             left(0.5)
@@ -148,8 +162,9 @@ def killing():
             rear(0.5)
         elif temp == 'x':
             stop()
-        #elif temp == ' ':
-
+        elif temp == 'k':
+            print('Yooooooooooooo')
+            attack()
         else:
             stop()
 
@@ -174,6 +189,9 @@ if __name__ == "__main__":
         go.setup(11, go.OUT)
         go.setup(13, go.OUT)
         go.setup(15, go.OUT)
+        go.setup(37, go.OUT)
+        go.setup(38, go.OUT)
+        go.setup(40, go.OUT)
         time.sleep(2)
         interrupt = 0
         
@@ -196,7 +214,6 @@ if __name__ == "__main__":
                 while True:
                     rr = requests.get('http://140.113.89.234:8888')
                     r = ast.literal_eval(rr.text)
-                    print(r)
                     if mode == 'secure':
                         if r['mode'] == 'mode2':
                             file = open('int.txt', 'w')
@@ -214,6 +231,7 @@ if __name__ == "__main__":
                             #print(r["dir"])
                             fkill = open('kill.txt', 'w')
                             if r['dir'] == 'w':
+                                print('Mark ')
                                 fkill.write('w')
                             elif r['dir'] == 'a':
                                 fkill.write('a')
@@ -223,8 +241,8 @@ if __name__ == "__main__":
                                 fkill.write('d')
                             elif r['dir'] == 'x':
                                 fkill.write('x')
-                            elif r['dir'] == ' ':
-                                fkill.write(' ')
+                            elif r['dir'] == 'k':
+                                fkill.write('k')
                             else:
                                 fkill.write('x')
                             fkill.close()
