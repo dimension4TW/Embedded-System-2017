@@ -13,20 +13,9 @@ import shlex
 import subprocess
 import random
 
-def front(t):
+def rear(t):
     go.output(7, False)
     go.output(11,True)
-    go.output(13,True)
-    go.output(15,False)
-    time.sleep(t)
-    go.output(7, False)
-    go.output(11,False)
-    go.output(13,False)
-    go.output(15,False)
-
-def rear(t):
-    go.output(7, True)
-    go.output(11,False)
     go.output(13,False)
     go.output(15,True)
     time.sleep(t)
@@ -35,7 +24,7 @@ def rear(t):
     go.output(13,False)
     go.output(15,False)
 
-def left(t):
+def front(t):
     go.output(7, True)
     go.output(11,False)
     go.output(13,True)
@@ -47,10 +36,21 @@ def left(t):
     go.output(15,False)
 
 def right(t):
-    go.output(7, False)
-    go.output(11,True)
+    go.output(7, True)
+    go.output(11,False)
     go.output(13,False)
     go.output(15,True)
+    time.sleep(t)
+    go.output(7, False)
+    go.output(11,False)
+    go.output(13,False)
+    go.output(15,False)
+
+def left(t):
+    go.output(7, False)
+    go.output(11,True)
+    go.output(13,True)
+    go.output(15,False)
     time.sleep(t)
     go.output(7, False)
     go.output(11,False)
@@ -117,7 +117,7 @@ def secure():
                     cv2.rectangle(image,(x,y),(x+w,y+h),(255,2,2),2)
                     count = count + 1
                     flag = 0
-                if count == 3:
+                if count == 1:
                     # send server picture first
                     # active beep for 5 seconds
                     beep()
@@ -139,13 +139,14 @@ def secure():
                 temp2 = f2.read(1)
                 f2.close()
                 if measure() < 20:
-                    turn = random.randint(0,1)
+                    #turn = random.randint(0,1)
+                    turn = 1
                     if turn == 0:
                         left(0.5)
                     else:
                         right(0.5)
                 else:
-                    front(0.1)
+                    front(0.5)
                 if temp2=='1':
                     os.kill(pid, signal.SIGKILL)
                     break

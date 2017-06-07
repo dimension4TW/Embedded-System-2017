@@ -8,11 +8,12 @@ gpio.setup(15,gpio.OUT)
 
 
 while True:
-    print "state1"
+    print 'state1'
     gpio.output(13,True)
     gpio.output(15,False)
     gpio.output(7,True)
     gpio.output(11,False)
+    
     time.sleep(2)
     print "state2"
     gpio.output(13,False)
@@ -27,8 +28,6 @@ while True:
     gpio.output(11,False)
 
     time.sleep(2)
-    
-    
     
 
 
