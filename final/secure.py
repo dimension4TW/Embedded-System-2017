@@ -107,13 +107,13 @@ def secure():
             for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
                 flag = 1
                 image = frame.array
-                # face = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-                hog = cv2.HOGDescriptor()
-                hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+                face = cv2.CascadeClassifier('haarcascade_lowerbody.xml')
+                #hog = cv2.HOGDescriptor()
+                #hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
                 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-                (rect2, weights) = hog.detectMultiScale(gray, winStride=(4, 4), padding=(8,8), scale=1.05)
-                # face_pos = face.detectMultiScale(gray, 1.1, 5)
-                for (x,y,w,h) in rect2:
+                #(rect2, weights) = hog.detectMultiScale(gray, winStride=(4, 4), padding=(8,8), scale=1.05)
+                face_pos = face.detectMultiScale(gray, 1.1, 5)
+                for (x,y,w,h) in face_pos:
                     cv2.rectangle(image,(x,y),(x+w,y+h),(255,2,2),2)
                     count = count + 1
                     flag = 0
@@ -177,7 +177,7 @@ def killing():
             stop()
         elif temp == 'k':
             attack()
-            
+
         else:
             stop()
 
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     trigger_pin = 16
     echo_pin    = 18
     global pro
-    
+
 
     mode = 'secure'
     while True:
@@ -207,7 +207,7 @@ if __name__ == "__main__":
         go.setup(40, go.OUT)
         time.sleep(2)
         interrupt = 0
-        
+
         file = open('int.txt', 'w')
         file.write('0')
         file.close()
