@@ -107,7 +107,7 @@ def secure():
             for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
                 flag = 1
                 image = frame.array
-                face = cv2.CascadeClassifier('haarcascade_lowerbody.xml')
+                face = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
                 #hog = cv2.HOGDescriptor()
                 #hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
                 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
