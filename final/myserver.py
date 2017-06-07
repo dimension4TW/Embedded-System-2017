@@ -25,7 +25,7 @@ class MainHandler(tornado.web.RequestHandler):
 			img = self.get_argument('img', '')
 			current_time = time.strftime("%m-%d-%Y--%H-%M", time.localtime())
 			print(current_time)
-			f = open(current_time+".jpg", 'wb')
+			f = open('./picture/'+current_time+".jpg", 'wb')
 			print(img)
 			bimg = base64.b64decode(img)
 			f.write(bimg)

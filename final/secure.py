@@ -11,6 +11,7 @@ import ast
 import base64
 import shlex
 import subprocess
+import random
 
 def front(t):
     go.output(7, False)
@@ -63,16 +64,20 @@ def stop():
     go.output(15,False)
 
 def beep():
-    go.output(38, False)
-    go.output(40, True)
+    go.output(38, True)
+    go.output(40, False)
     time.sleep(1)
     go.output(38, False)
     go.output(40, False)
 
 def attack():
     go.output(37, True)
+    go.output(38, True)
+    go.output(40, False)
     time.sleep(0.5)
     go.output(37, False)
+    go.output(38, False)
+    go.output(40, False)
 
 def measure():
     go.output(trigger_pin, go.HIGH)
@@ -102,10 +107,13 @@ def secure():
             for frame in camera.capture_continuous(rawCapture,format="bgr",use_video_port=True):
                 flag = 1
                 image = frame.array
-                face = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-                gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-                face_pos = face.detectMultiScale(gray, 1.1, 5)
-                for (x,y,w,h) in face_pos:
+                # face = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+                hog = cv2.HOGDescriptor()
+                hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                (rect2, weights) = hog.detectMultiScale(gray, winStride=(4, 4), padding=(8,8), scale=1.05)
+                # face_pos = face.detectMultiScale(gray, 1.1, 5)
+                for (x,y,w,h) in rect2:
                     cv2.rectangle(image,(x,y),(x+w,y+h),(255,2,2),2)
                     count = count + 1
                     flag = 0
@@ -131,9 +139,13 @@ def secure():
                 temp2 = f2.read(1)
                 f2.close()
                 if measure() < 20:
-                    left(0.3)
+                    turn = random.randint(0,1)
+                    if turn == 0:
+                        left(0.5)
+                    else:
+                        right(0.5)
                 else:
-                    front(0.2)
+                    front(0.1)
                 if temp2=='1':
                     os.kill(pid, signal.SIGKILL)
                     break
@@ -163,8 +175,8 @@ def killing():
         elif temp == 'x':
             stop()
         elif temp == 'k':
-            print('Yooooooooooooo')
             attack()
+            
         else:
             stop()
 
